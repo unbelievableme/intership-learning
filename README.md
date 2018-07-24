@@ -1,2 +1,1 @@
-# shell-programming
-shell编程学习
+实习期间的学习心得
