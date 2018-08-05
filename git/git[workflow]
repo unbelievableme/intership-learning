@@ -118,6 +118,22 @@ vim ~/.gitconfig
     email = your@email.com
 ```
 ## 5.hint: ...review...closed
-**[bg]:** 在bg
+**[bg]:** 在gerrit平台上abandon某个提交,在本地又重新push了这个提交  
+**[action]** 提示:hint： ...review...closed  
+git ci --amend  
+**[action]** 弹窗提示编辑commit msg,删除掉change_ID,保存退出  
+git cin    
+**[action]** 重新生成了change_id  
+git push origin HEAD:refs/for/master  
+**[end]**  push成功
+
 
 ## 6.a big demand is coming
+
+
+
+
+
+
+
+
