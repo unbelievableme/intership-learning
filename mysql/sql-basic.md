@@ -24,8 +24,8 @@ mysqldumpslow -n 10 /usr/local/mysql/data/bytedancedeMBP-slow.log | more
 ### sql分析
 - explain  
 explain select * from employee_info;  
-<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/8.jpg'>  
-tips:  
+&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/8.jpg'>  
+    tips:  
     + table:查询关联的表  
     + type:const>eq_ref>ref>range>index>all  
         * const:const说明查询最多有一个匹配行,在主键索引或者唯一索引时使用  
@@ -107,3 +107,10 @@ explain select max(overtime_day) from overtime_subsidy
     ```
     explain select count(overtime_duration) from overtime_subsidy
     ```
+
+- 1
+    - 1
+        - 1
+        - 2
+    - 2
+- 2
