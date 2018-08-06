@@ -79,10 +79,11 @@ explain select * from employee_info;
         ```
         &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/17.jpg'>   
 
+
 - 优化准则   
-1.查询次数多,查询占用时长多(mysqldumpslow前几条)  
-2.IO大的sql(log:关注Rows-examine项,explain:关注rows)  
-3.未命中索引的sql(log:关注Rows-examine和Rows Send对比,explain:返回的条数与rows对比) 
+    - 查询次数多,查询占用时长多(mysqldumpslow前几条)  
+    - IO大的sql(log:关注Rows-examine项,explain:关注rows)  
+    - 未命中索引的sql(log:关注Rows-examine和Rows Send对比,explain:返回的条数与rows对比) 
 
 
 ### 查询优化
