@@ -78,6 +78,7 @@ explain select * from employee_info;
         explain select distinct month from product_investment where employee_id in (87,1083) 
         ```
         &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/17.jpg'>   
+
 - 优化准则   
 1.查询次数多,查询占用时长多(mysqldumpslow前几条)  
 2.IO大的sql(log:关注Rows-examine项,explain:关注rows)  
@@ -102,15 +103,9 @@ explain select max(overtime_day) from overtime_subsidy
     ```
     explain select count(*) from employee_info 
     ```
-
+    &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/20.jpg'>   
     - count(column_name):返回该列非null的行数
     ```
-    explain select count(overtime_duration) from overtime_subsidy
+    explain select count(employee_type) from employee_info
     ```
-
-- 1
-    - 1
-        - 1
-        - 2
-    - 2
-- 2
+    &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/21.jpg'>   
