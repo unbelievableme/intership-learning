@@ -26,29 +26,29 @@ mysqldumpslow -n 10 /usr/local/mysql/data/bytedancedeMBP-slow.log | more
 explain select * from employee_info;  
 <img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/8.jpg'>  
 tips:  
-    - table:查询关联的表  
-    - type:const>eq_ref>ref>range>index>all  
-        - const:const说明查询最多有一个匹配行,在主键索引或者唯一索引时使用  
+    + table:查询关联的表  
+    + type:const>eq_ref>ref>range>index>all  
+        * const:const说明查询最多有一个匹配行,在主键索引或者唯一索引时使用  
         ```
         explain select * from employee_info where id = 1
         ```
         &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/9.jpg'>  
-        - eq_ref:连接查询中,连接条件使用了主键或者唯一索引  
+        * eq_ref:连接查询中,连接条件使用了主键或者唯一索引  
         ```
         explain select e.company, o.overtime_duration from employee_info e inner join overtime_subsidy o on e.id = o.applicant_id  
         ```  
         &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/10.jpg'>  
-        - ref:查找条件中使用了索引,而且索引不为主键或者unique,使用索引查询第一条数据后还会进行小范围附近扫描  
+        * ref:查找条件中使用了索引,而且索引不为主键或者unique,使用索引查询第一条数据后还会进行小范围附近扫描  
         ```
         explain select * from employee_info where leader_id = 6787559
         ```        
         &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/13.jpg'>  
-        - range:检索给定范围的行,key说明用了哪个索引,ref列为null  
+        * range:检索给定范围的行,key说明用了哪个索引,ref列为null  
         ```
         explain select * from product_investment where employee_id < 87
         ```
         &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/11.jpg'>     
-        - index:会扫描索引树,在对结果有排序需求的时候效率高于all  
+        * index:会扫描索引树,在对结果有排序需求的时候效率高于all  
         ```
         explain select * from employee_info order by name  #using filesort
         explain select * from employee_info order by id    #扫描索引树
@@ -57,17 +57,17 @@ tips:
         &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/14.jpg'>   
         &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/15.jpg'>  
         &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/16.jpg'>    
-        - all:全表扫描,没有用到索引    
+        * all:全表扫描,没有用到索引    
         ```
         explain select * from employee_info where employee_type = '全职'
         ```
         &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/12.jpg'>   
-    - possible keys:可以使用的索引  
-    - key:实际使用的索引  
-    - key_len:索引的长度  
-    - ref:
-    - rows:查询必须检查的行数  
-    - extra:其他操作信息,例如using filesort, using temporary
+    + possible keys:可以使用的索引  
+    + key:实际使用的索引  
+    + key_len:索引的长度  
+    + ref:
+    + rows:查询必须检查的行数  
+    + extra:其他操作信息,例如using filesort, using temporary
         - using filesort:额外操作,低效
         ```
         explain select * from employee_info order by name
