@@ -24,7 +24,7 @@ mysqldumpslow -n 10 /usr/local/mysql/data/bytedancedeMBP-slow.log | more
 ### sql分析
 - explain  
 explain select * from employee_info;  
-<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/8.jpg' width="50%">  
+<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/8.jpg'>  
 tips:  
     - table:查询关联的表  
     - type:const>eq_ref>ref>range>index>all  
@@ -32,36 +32,36 @@ tips:
         ```
         explain select * from employee_info where id = 1
         ```
-        &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/9.jpg' width="50%">  
+        &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/9.jpg'>  
         - eq_ref:连接查询中,连接条件使用了主键或者唯一索引  
         ```
         explain select e.company, o.overtime_duration from employee_info e inner join overtime_subsidy o on e.id = o.applicant_id  
         ```  
-        &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/10.jpg' width="50%">  
+        &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/10.jpg'>  
         - ref:查找条件中使用了索引,而且索引不为主键或者unique,使用索引查询第一条数据后还会进行小范围附近扫描  
         ```
         explain select * from employee_info where leader_id = 6787559
         ```        
-        &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/13.jpg' width="50%">  
+        &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/13.jpg'>  
         - range:检索给定范围的行,key说明用了哪个索引,ref列为null  
         ```
         explain select * from product_investment where employee_id < 87
         ```
-        &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/11.jpg' width="50%">     
+        &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/11.jpg'>     
         - index:会扫描索引树,在对结果有排序需求的时候效率高于all  
         ```
         explain select * from employee_info order by name  #using filesort
         explain select * from employee_info order by id    #扫描索引树
         explain select id from employee_info               #索引覆盖,索引包含了需要的信息
         ```
-        &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/14.jpg' width="50%">   
-        &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/15.jpg' width="50%">  
-        &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/16.jpg' width="50%">    
+        &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/14.jpg'>   
+        &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/15.jpg'>  
+        &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/16.jpg'>    
         - all:全表扫描,没有用到索引    
         ```
         explain select * from employee_info where employee_type = '全职'
         ```
-        &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/12.jpg' width="50%">   
+        &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/12.jpg'>   
     - possible keys:可以使用的索引  
     - key:实际使用的索引  
     - key_len:索引的长度  
@@ -72,12 +72,12 @@ tips:
         ```
         explain select * from employee_info order by name
         ```
-        &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/14.jpg' width="50%">   
+        &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/14.jpg'>   
         - using temporary:创建了临时表低效
         ```
         explain select distinct month from product_investment where employee_id in (87,1083) 
         ```
-        &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/17.jpg' width="50%">   
+        &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/17.jpg'>   
 - 优化准则   
 1.查询次数多,查询占用时长多(mysqldumpslow前几条)  
 2.IO大的sql(log:关注Rows-examine项,explain:关注rows)  
@@ -89,14 +89,21 @@ tips:
 ```
 explain select max(overtime_day) from overtime_subsidy
 ```
-<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/18.jpg' width="50%">  
+<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/18.jpg'>  
 
 ```
 create index idx_overtime_day on overtime_subsidy(overtime_day)  
 explain select max(overtime_day) from overtime_subsidy
 ```
-<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/19.jpg' width="50%">  
+<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/19.jpg'>  
 
 - count  
-    - count(*)
-    - count(column_name)
+    - count(*):返回结果集的行数
+    ```
+    explain select count(*) from employee_info 
+    ```
+
+    - count(column_name):返回该列非null的行数
+    ```
+    explain select count(overtime_duration) from overtime_subsidy
+    ```
