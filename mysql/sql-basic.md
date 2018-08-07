@@ -152,8 +152,6 @@ explain select max(overtime_day) from overtime_subsidy
     &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/25.jpg'>    
     &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/29.jpg'>    
 
-    - 
-
 - join
 
 - 索引
@@ -169,6 +167,6 @@ explain select max(overtime_day) from overtime_subsidy
 
 
 ## 参考文献
-http://www.cnblogs.com/zhengyun_ustc/p/slowquery1.html
-http://www.cnblogs.com/micrari/p/6583482.html
-https://www.cnblogs.com/micrari/p/6921806.html
+http://www.cnblogs.com/zhengyun_ustc/p/slowquery1.html  
+http://www.cnblogs.com/micrari/p/6583482.html   
+https://www.cnblogs.com/micrari/p/6921806.html  
