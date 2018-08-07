@@ -26,6 +26,15 @@ mysqldumpslow -n 10 /usr/local/mysql/data/bytedancedeMBP-slow.log | more
 explain select * from employee_info;  
 &nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/8.jpg'>  
     tips:  
+    + select_type:select语句的类型  
+        * simple: 简单查询,不包含子查询和连接查询  
+        * subquery: 子查询中的第一个select,并且不依赖外部表  
+        * dependent_subquery: 与subquery区别是依赖外部查询  
+        * materialized: 物化查询  
+        ```
+        explain select * from product_investment where month in (select overtime_day from overtime_subsidy)
+        ```  
+        &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/24.jpg'>  
     + table:查询关联的表  
     + type:const>eq_ref>ref>range>index>all  
         * const:const说明查询最多有一个匹配行,在主键索引或者唯一索引时使用  
@@ -110,3 +119,56 @@ explain select max(overtime_day) from overtime_subsidy
     explain select count(employee_type) from employee_info
     ```
     &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/21.jpg'>   
+
+- 子查询
+    - in + 子查询  
+    ```
+    explain select * from product_investment where employee_id in (select id from employee_info where leader_id = 1)   
+    show warnings;
+    ```
+    &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/22.jpg'>   
+    &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/23.jpg'>
+
+    ```
+    explain select * from product_investment where employee_id = (select id from employee_info where leader_id = 1 limit 1)  
+    ```
+    &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/26.jpg'>  
+
+    ```
+    explain select * from product_investment where exists(select 1 from employee_info where leader_id = 1 and employee_info.id = product_investment.employee_id)  
+    ```
+    &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/27.jpg'>  
+
+    ```
+    explain select * from product_investment where month in (select overtime_day from overtime_subsidy);  
+    ```
+    &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/28.jpg'>  
+
+    - from + 子查询  
+    ```
+    explain select p.create_time from product_investment p ,(select id from employee_info where leader_id = 1) s where s.id = p.employee_id;  
+    show warnings;  
+    ```
+    &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/25.jpg'>    
+    &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/29.jpg'>    
+
+    - 
+
+- join
+
+- 索引
+
+- order-by
+
+- group by
+
+- and. or, not
+
+- limit 
+
+
+
+## 参考文献
+http://www.cnblogs.com/zhengyun_ustc/p/slowquery1.html
+http://www.cnblogs.com/micrari/p/6583482.html
+https://www.cnblogs.com/micrari/p/6921806.html
