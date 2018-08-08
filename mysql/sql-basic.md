@@ -95,7 +95,7 @@ explain select * from employee_info;
     - 未命中索引的sql(log:关注Rows-examine和Rows Send对比,explain:返回的条数与rows对比) 
 
 
-### 查询优化
+### 查询优化  
 - max
 ```
 explain select max(overtime_day) from overtime_subsidy
@@ -119,6 +119,11 @@ explain select max(overtime_day) from overtime_subsidy
     explain select count(employee_type) from employee_info
     ```
     &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/21.jpg'>   
+
+    ```
+    explain select count(en_name) from employee_info #与上面对比
+    ```
+    &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/30.jpg'>    
 
 - 子查询
     - in + 子查询  
@@ -153,20 +158,119 @@ explain select max(overtime_day) from overtime_subsidy
     &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/29.jpg'>    
 
 - join
+    - BNLJ(Block Nested-Loop Join)
+    ```
+    explain select * from overtime_subsidy o inner join role_employee r where o.applicant_id = r.employee_id and r.role_id = 106
+    ```
+    &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/31.jpg'>   
+
+    - INLJ(Index Nested-Loop Join)
+    ```
+    create index idx_employee_id on role_employee(employee_id)   
+    explain select * from overtime_subsidy o inner join role_employee r where o.applicant_id = r.employee_id and r.role_id = 106  
+    ```
+    &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/32.jpg'>  
+
+    上述算法详解可以参考<a href ="https://blog.csdn.net/orangleliu/article/details/72850659">这里</a>
 
 - 索引
+    - 建立索引
+        ```
+        show index from employee_info
+        ```
+        &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/33.jpg'>   
+        - tips:
+            + Cardinality :散列程度, Cardinality/总记录数越大,索引的价值越高  
+            + Index_type: 索引的数据结构类型  
+    - 组合索引  
+        ```
+        create index idx_A_B on table_name(A,B)
+        ```  
+        - 用到组合索引:  
+            - A > 1  
+            - A = 1 and B =1  
+            - A = 1 and B >1  
+            - A in (1,2) and B > 1  
+            - A in (1,2) and B = 1  
+            - A = 1 and B in (1,2)  
+        - 用到部分索引:  
+            - A > 1 and B = 1 (A走索引,B扫表))  
+        - 没用索引:  
+            - B = 1  
+            - B > 1  
+            - A in (1,2) and B in (1,2)
+    - 合并索引  
+        名词解释:对多个索引分别进行条件扫描，然后将它们各自的结果进行合并(intersect/union),详情参考<a href="https://www.cnblogs.com/digdeep/p/4975977.html">这里</a>
+        ```
+        create index idx_A on table_name(A)
+        create index idx_B on table_name(B)
+        ```
+        exp1:
+        ```
+        select * from table_name where A = 1 and B = 1
+        ```
+        explain的type为index_merge,extra为using intersect(A,B),针对这种情况可以建立A,B的联合索引,这样就只需要扫描一次索引而不是两次
 
+        exp2:
+        ```
+        select * from table_name where A = 1 or B = 1
+        ```
+        explain的type为idnex_merge，extra为using union(A,B),在这种情况下mysql自带的index_merge
+        
 - order-by
+    - 扫描索引排序
+        ```
+        create index idx_A_B on table_name(A,B)
+        ```
+        - order-by走索引:  
+            - order by A
+            - A = 1 order by B
+            - order by A,B #两列必须相同顺序排序
+        - order-by不走索引:  
+            - order by B
+            - A > 1 order by B
+            - A in (1,2) order by B
+            - order by A , B desc
+
+    - 文件排序
+        - 双路排序
+        - 单路排序
+
 
 - group by
 
-- and. or, not
+- distinct
 
-- limit 
+- limit   
+    常见sql:  
+    ```
+    select * from table_name limit a , b # 当a特别大的时候效率很低
+    ```
 
+    效率低的原因:  
+    >数据库的数据存储并不是像我们想象中那样，按表按顺序存储数据，一方面是因为计算机存储本身就是随机读写，另一方面是因为数据的操作有很大的随机性，即使一开始数据的存储是有序的，经过一系列的增删查改之后也会变得凌乱不堪。所以数据库的数据存储是随机的，使用 B+Tree， Hash 等方式组织索引。所以当你让数据库读取第 10001 条数据的时候，数据库就只能一条一条的去查去数  
+
+    优化:
+    ```
+    select * from table_name where id > (select id from table_name limit a , 1) limit b
+    ```
+
+    ```
+    select * from table_name inner join (select id from table_name limit a ,b ) t using(id)
+    ```
+    总的思路就是查询的id通过二级索引可以获得,避免了扫表,提高了效率,具体参考<a href="https://www.jianshu.com/p/77eaad62f974">索引覆盖</a>  
+
+    下述实际例子:  
+    ```
+    explain select * from employee_info inner join (select id from employee_info limit 1000,10) a using(id)
+    ```
+    &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysl/34.jpg'>   
 
 
 ## 参考文献
 http://www.cnblogs.com/zhengyun_ustc/p/slowquery1.html  
 http://www.cnblogs.com/micrari/p/6583482.html   
 https://www.cnblogs.com/micrari/p/6921806.html  
+https://blog.csdn.net/orangleliu/article/details/72850659    
+https://www.jianshu.com/p/efecd0b66c55  
+
