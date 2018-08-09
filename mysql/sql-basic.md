@@ -274,6 +274,11 @@ explain select max(overtime_day) from overtime_subsidy
 
     下述实际例子:  
     ```
+    explain select * from employee_info where id > (select id from employee_info limit 1000 , 1) limit 10  
+    ```
+    &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/38.jpg'>   
+
+    ```
     explain select * from employee_info inner join (select id from employee_info limit 1000,10) a using(id)
     ```
     &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/34.jpg'>   
