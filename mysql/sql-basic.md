@@ -87,7 +87,19 @@ explain select * from employee_info;
         explain select distinct month from product_investment where employee_id in (87,1083) 
         ```
         &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/17.jpg'>   
-
+        - using index  
+        覆盖索引:查询的数据通过扫描索引就可以获得  
+        - using where   
+        需要回表来筛选数据,例如：
+        ```
+        select * from employee_info where leader_id = 1 and name = 'xxx' # leader_id上有索引,name没有
+        ```
+        - using index condition  
+        先过滤索引然后where过滤数据,例如:  
+        ```
+        explain select * from employee_info where leader_id > 1
+        ```
+        
 
 - 优化准则   
     - 查询次数多,查询占用时长多(mysqldumpslow前几条)  
@@ -266,6 +278,27 @@ explain select max(overtime_day) from overtime_subsidy
     ```
     &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/34.jpg'>   
 
+- like  
+    - like 'keyword%'
+    ```
+    create index idx_name on employee_info(name)  
+    explain select * from employee_info where name like '张%'
+    ```
+    &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/35.jpg'>   
+
+    - like '%keyword'
+
+    ```
+    explain select * from employee_info where name like '%张%'  
+    drop index idx_name on employee_info(name)  
+    create FULLTEXT index idx_name on employee_info(name)  
+    explain select * from employee_info where name like '%张%'   
+    ```
+    &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/37.jpg'> 
+
+    &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/36.jpg'>  
+
+    注意：mysql支持的全文索引,按照分词匹配,例如name=('张三', '李四')) or ('张三' '李四'))
 
 ## 参考文献
 http://www.cnblogs.com/zhengyun_ustc/p/slowquery1.html  
