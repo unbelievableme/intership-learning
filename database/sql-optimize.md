@@ -183,7 +183,7 @@ explain select max(overtime_day) from overtime_subsidy
     ```
     &nbsp;&nbsp;<img src='https://github.com/unbelievableme/intership-learning/blob/master/image/mysql/32.jpg'>  
 
-    上述算法详解可以参考<a href ="https://blog.csdn.net/orangleliu/article/details/72850659">这里</a>
+    上述算法详解可以参考[这里](https://blog.csdn.net/orangleliu/article/details/72850659)
 
 - 索引
     - 建立索引
@@ -212,7 +212,7 @@ explain select max(overtime_day) from overtime_subsidy
             - B > 1  
             - A in (1,2) and B in (1,2)
     - 合并索引  
-        名词解释:对多个索引分别进行条件扫描，然后将它们各自的结果进行合并(intersect/union),详情参考<a href="https://www.cnblogs.com/digdeep/p/4975977.html">这里</a>
+        名词解释:对多个索引分别进行条件扫描，然后将它们各自的结果进行合并(intersect/union),详情参考[这里](https://www.cnblogs.com/digdeep/p/4975977.html)
         ```
         create index idx_A on table_name(A)
         create index idx_B on table_name(B)
@@ -270,7 +270,7 @@ explain select max(overtime_day) from overtime_subsidy
     ```
     select * from table_name inner join (select id from table_name limit a ,b ) t using(id)
     ```
-    总的思路就是查询的id通过二级索引可以获得,避免了扫表,提高了效率,具体参考<a href="https://www.jianshu.com/p/77eaad62f974">索引覆盖</a>  
+    总的思路就是查询的id通过二级索引可以获得,避免了扫表,提高了效率,具体参考[索引覆盖](https://www.jianshu.com/p/77eaad62f974)  
 
     下述实际例子:  
     ```

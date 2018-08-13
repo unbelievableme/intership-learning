@@ -97,12 +97,12 @@
 ## HTTP版本  
 - http1.0与1.1区别
     - 长连接  
-    - 100状态码 
+    - 100状态码 
     - Host域
 - http1.1与1.2区别  
     - 二进制分帧  
-    - <a href='http://www.ruanyifeng.com/blog/2018/03/http2_server_push.html'>服务器推送</a>
-    - <a href='https://www.jianshu.com/p/f44b930cfcac'>头部压缩</a>  
+    - [服务器推送](http://www.ruanyifeng.com/blog/2018/03/http2_server_push.html)
+    - [头部压缩](https://www.jianshu.com/p/f44b930cfcac)  
 
 ## web安全 
 - CSRF(跨站请求伪造) 
