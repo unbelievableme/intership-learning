@@ -1,0 +1,37 @@
+## hashMap
+### hash算法
+- hash简介
+- 构造hash函数的方法
+    - 直接寻址法
+    - 平方取中法
+    - 折叠法
+- 散列表
+- hash冲突
+    - 开发地址法
+        - 线性探测再散列
+        - 平方探测再散列
+        - 随机探测再散列
+    - 再哈希法
+    - 链地址法
+- java中的hash
+
+### 重要方法分析
+- putVal(增)
+- getNode(查)
+- resize(扩容)
+- hash(hash算法)
+- containsKey
+- containsValue
+- 疑问:
+    - table的大小为什么是2的n次幂？
+    - HashMap的初始容量为什么是16
+    - 放进hashmap的对象equals和hashcode方法？
+
+### hashmap优化
+- 减少hash冲突
+- 减少扩容次数
+- 实例：
+    - 大致容量可以预估
+    - 动态变化
+
+## ConcurrentHashMap
