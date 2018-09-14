@@ -221,13 +221,19 @@ explain select max(overtime_day) from overtime_subsidy
         ```
         select * from table_name where A = 1 and B = 1
         ```
-        explain的type为index_merge,extra为using intersect(A,B),针对这种情况可以建立A,B的联合索引,这样就只需要扫描一次索引而不是两次
+        explain的type为index_merge,extra为using intersect(A,B)  
+        优化：针对这种情况可以建立A,B的联合索引,这样即减少了查询的数据量,也不必求交集
 
         exp2:
         ```
         select * from table_name where A = 1 or B = 1
         ```
-        explain的type为idnex_merge，extra为using union(A,B),在这种情况下mysql自带的index_merge
+        explain的type为index_merge，extra为using union(A,B),在数据量比较大的情况效率特别低  
+        优化：
+        ```
+        select * from table_name where A = 1 union all select * from table_name where A!=1 and B = 1
+        ```
+        上述sql就没有了去重的操作
         
 - order-by
     - 扫描索引排序

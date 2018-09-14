@@ -3,15 +3,30 @@ k/v数据结构
 为什么读写快
 
 
-### 常用命令
-
-
-
 ### 基本数据类型
 - String
+    - set
+    - get
+    - incr/incrby
+    - decr/decrby
+    - setnx
 - List
+    - lpush
+    - lpop
+    - rpush
+    - rpop
+    - lset
 - Set
-- HashMap
+    - sadd
+    - smembers
+    - sunion
+    - sdiff
+- Hash
+    - hset
+    - hget
+    - hkeys
+    - hlen
+    - hexists
 - 使用场景
 
 ### Redis与Memcached
@@ -19,6 +34,9 @@ k/v数据结构
 - 持久化
 - 分布式
 
+### redis的淘汰策略
+- lru
+- 设置淘汰时间expire
 
 ### 持久化
 - RDB
@@ -35,8 +53,10 @@ k/v数据结构
 
 ### redis集群
 - 集群策略
-    - redis cluster
-    - 主从复制的问题
+    - redis cluster(crc16->slot->node)
+        - 横向扩展增加master，提高写并发
+        - 纵向扩展增加slaver，提高读并发
+    
 
 - 集群原理
     - 一致性hash算法

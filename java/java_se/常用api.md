@@ -19,3 +19,8 @@
 
 ### collections
 - reverseOrder
+
+### HashMap
+- get
+- put
+- keySet
